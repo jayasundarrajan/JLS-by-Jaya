@@ -1,0 +1,31 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: fits_postgres
+    environment:
+      POSTGRES_USER: fits
+      POSTGRES_PASSWORD: fits_dev_password
+      POSTGRES_DB: fits_dev
+    ports:
+      - "5433:5432"
+    volumes:
+      - fits_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fits -d fits_dev"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7
+    container_name: fits_redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  fits_pgdata:
