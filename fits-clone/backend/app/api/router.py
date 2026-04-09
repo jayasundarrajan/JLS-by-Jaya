@@ -1,8 +1,13 @@
 from fastapi import APIRouter
-from app.api.routes import users, closet_items, item_images, jobs, closet_item_images, outfits
+from app.api.routes import users, closet_items, item_images, jobs, closet_item_images, outfits, auth
 
 api_router = APIRouter()
 
+api_router.include_router(
+    auth.router,
+    prefix="/auth",
+    tags=["auth"],
+)
 api_router.include_router(
     users.router,
     prefix="/users",
@@ -33,3 +38,4 @@ api_router.include_router(
     tags=["jobs"],
 )
 api_router.include_router(outfits.router, prefix="/outfits", tags=["outfits"])
+
